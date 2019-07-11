@@ -1,0 +1,56 @@
+{
+    "name": "lasallesoftware/lsv2-blogfrontend-pkg",
+    "description": "LaSalle Software v2 Blog Front-end Package.",
+    "keywords": [
+        "lasalle software",
+        "south lasalle",
+        "bob bloom",
+        "package",
+        "laravel"
+    ],
+    "homepage": "https://lasallesoftware.ca",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bob Bloom",
+            "email": "bob.bloom@lasallesoftware.ca",
+            "homepage": "https://LasalleSoftware.ca",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1.3",
+        "fideloper/proxy": "^4.0"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Lasallesoftware\\Blogfrontend\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lasallesoftware\\Blogfrontend\\Test\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Lasallesoftware\\Blogfrontend\\BlogfrontendServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "suggest": {
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
