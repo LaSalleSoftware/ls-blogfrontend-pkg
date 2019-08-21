@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is part of the Lasalle Software blog back-end package
+ * This file is part of the Lasalle Software blog front-end package
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,8 +15,8 @@
  * @author     Bob Bloom
  * @email      bob.bloom@lasallesoftware.ca
  * @link       https://lasallesoftware.ca
- * @link       https://packagist.org/packages/lasallesoftware/lsv2-blogbackend-pkg
- * @link       https://github.com/LaSalleSoftware/lsv2-blogbackend-pkg
+ * @link       https://packagist.org/packages/lasallesoftware/lsv2-blogfrontend-pkg
+ * @link       https://github.com/LaSalleSoftware/lsv2-blogfrontend-pkg
  *
  */
 
