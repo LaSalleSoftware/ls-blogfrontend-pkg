@@ -23,55 +23,51 @@
 namespace Lasallesoftware\Blogfrontend\Http\Controllers;
 
 // LaSalle Software
-use Lasallesoftware\Library\Common\Http\Controllers\CommonController;
-use Lasallesoftware\Library\UniversallyUniqueIDentifiers\UuidGenerator;
-
+use Lasallesoftware\Library\Common\Http\Controllers\CommonControllerForClients;
 
 // Third party classes
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use Lcobucci\JWT\Builder;
-use Lcobucci\JWT\Signer\Hmac\Sha256;
-use Lcobucci\JWT\Signer\Key;
 
-class DisplaySinglePostController extends CommonController
+
+class DisplaySinglePostController extends CommonControllerForClients
 {
+
     public function DisplaySinglePost()
     {
-        $token = $this->createJWT();
+        $comment = 'Created by ' .
+            config('lasallesoftware-library.lasalle_app_domain_name') .
+            "'s Lasallesoftware\Blogfrontend\Http\Controllers\DisplaySinglePostController"
+        ;
 
-        $headers = [
-            'Authorization'   => 'Bearer ' . $token,
-            'InstalledDomain' => 1,
-            'Accept'          => 'application/json',
-        ];
-
-        $client = new Client();
-
-        //$getUrl = "http://temp.api.com:8888/api";
-        $getUrl = "http://hackintosh.lsv2-adminbackend-app.com:8888/singlearticleblog";
 
         try {
 
-            $response = $client->request('GET', $getUrl, [
-                'headers'         => $headers,
-                'connect_timeout' => 10,
-            ]);
+            $response = $this->xx($comment);
 
             // Here the code for successful request
             $body = json_decode($response->getBody());
 
-            echo "<h1>" . $getUrl . "</h1>";
+
+
+
+
+
+            //echo "<h1>" . $getUrl . "</h1>";
             echo "<h1>" . $response->getStatusCode() . "</h1>";
+            echo "<br>message = " . $body->message;
 
-            $this->viewPost($body->post, $body->tags);
 
-            $this->viewPostupdates($body->postupdates);
 
-            echo "<br><br>---- end of post! -----<br>";
 
-            echo "<h1>token = "  . $body->token;
-            echo "<br>domain = " . $body->domain;
+            //$this->viewPost($body->post, $body->tags);
+
+            //$this->viewPostupdates($body->postupdates);
+
+            //echo "<br><br>---- end of post! -----<br>";
+
+            //echo "<h1>token = "  . $body->token;
+            //echo "<br>domain = " . $body->domain;
 
 
 
@@ -162,44 +158,5 @@ class DisplaySinglePostController extends CommonController
                 echo "<br>" . $postupdate->content;
             }
         }
-    }
-
-
-    public function createJWT()
-    {
-        $signer           = new Sha256();
-        $time             = time();
-        $installed_domain = app('config')->get('lasallesoftware-library.lasalle_app_domain_name');
-
-
-        // https://auth0.com/docs/tokens/jwt-claims
-        // The JWT specification defines seven reserved claims that are not required, but are recommended to allow interoperability with third-party applications. These are:
-        //
-        // iss (issuer): Issuer of the JWT
-        // sub (subject): Subject of the JWT (the user)
-        // aud (audience): Recipient for which the JWT is intended
-        // exp (expiration time): Time after which the JWT expires
-        // nbf (not before time): Time before which the JWT must not be accepted for processing
-        // iat (issued at time): Time at which the JWT was issued; can be used to determine age of the JWT
-        // jti (JWT ID): Unique identifier; can be used to prevent the JWT from being replayed (allows a token to be used only once)
-        $token = (new Builder())
-            ->issuedBy($installed_domain)              // Configures the issuer (iss claim)
-            //->permittedFor('admin')                  // Configures the audience (aud claim)
-            ->identifiedBy($this->makeUuid(), true)    // Configures the id (jti claim), replicating as a header item
-            ->issuedAt($time)                          // Configures the time that the token was issue (iat claim)
-            ->canOnlyBeUsedAfter($time + 60)           // Configures the time that the token can be used (nbf claim)
-            ->expiresAt($time + 3600)                  // Configures the expiration time of the token (exp claim)
-            ->getToken($signer, new Key('testing'))    // Retrieves the generated token
-        ;
-
-        //var_dump($token->verify($signer, 'testing 1'));  // false, because the key is different
-        //var_dump($token->verify($signer, 'testing'));    // true, because the key is the same
-
-        return $token;
-    }
-
-    public function makeUuid(UuidGenerator $uuidGenerator)
-    {
-        return $uuidGenerator->newUuid();
     }
 }

@@ -22,4 +22,8 @@
 
 Route::get('/playtest', 'Lasallesoftware\Blogfrontend\Http\Controllers\PlaytestController@Index');
 
+Route::get('/blogplay', 'Lasallesoftware\Blogfrontend\Http\Controllers\PlaytestController@PingBackendBlogplay');
+
+
+
 Route::get("{slug}", 'Lasallesoftware\Blogfrontend\Http\Controllers\DisplaySinglePostController@DisplaySinglePost');

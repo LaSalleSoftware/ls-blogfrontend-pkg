@@ -109,6 +109,72 @@ class PlaytestController extends CommonController
     }
 
 
+    public function PingBackendBlogplay()
+    {
+        $token = $this->factory->createJWT();
+
+        echo "<br>generated token = " . $token;
+
+        $headers = [
+            'Authorization'   => 'Bearer ' . $token,
+            'Accept'          => 'application/json',
+        ];
+
+        $client = new Client();
+
+        //$getUrl = "http://temp.api.com:8888/api";
+        $getUrl = "http://hackintosh.lsv2-adminbackend-app.com:8888/api/v1/blogplay";
+
+        try {
+
+            $response = $client->request('GET', $getUrl, [
+                'headers'         => $headers,
+                'connect_timeout' => 10,
+            ]);
+
+            // Here the code for successful request
+            $body = json_decode($response->getBody());
+
+            echo "<h1>" . $getUrl . "</h1>";
+            echo "<h1>" . $response->getStatusCode() . "</h1>";
+
+            echo "<pre>";
+            print_r($response);
+            echo "</pre>";
+
+            echo "response from blogplay = " . $body->message;
+
+            $LASALLE_JWT_AUD_CLAIM = env('LASALLE_JWT_AUD_CLAIM');
+            echo "<br>LASALLE_JWT_AUD_CLAIM = " . $LASALLE_JWT_AUD_CLAIM;
+
+
+
+            echo "<br><br>---------<br>";
+
+
+
+
+
+
+        } catch (RequestException $e) {
+
+            $body = json_decode($e->getResponse()->getBody());
+
+            echo "<h2>".$e->getResponse()->getStatusCode()."</h2>";
+            echo "<h2> message = ".$body->message."</h2>";
+
+            if (isset($body->message)) echo "<h2> message = " . $body->message . "</h2>";
+            if (isset($body->errors))  echo "<h2> errors = " . $body->errors . "</h2>";
+
+            echo "<br>xxx = " . $e->getMessage();
+
+        } catch (\Exception $e) {
+
+            // There was another exception.
+            echo "No response was received. No status code nor any diagnostic information was given to us.";
+            echo "<br>xxx = " . $e->getMessage();
+        }
+    }
 
 
 
