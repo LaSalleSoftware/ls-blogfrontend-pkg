@@ -24,6 +24,10 @@ Route::get('/playtest', 'Lasallesoftware\Blogfrontend\Http\Controllers\PlaytestC
 
 Route::get('/blogplay', 'Lasallesoftware\Blogfrontend\Http\Controllers\PlaytestController@PingBackendBlogplay');
 
+// single post by slug, or category listing (by title)
+//$router->get('{slug}', '\Lasallecms\Lasallecmsfrontend\Http\Controllers\PostController@DisplaySinglePost')->where('slug', '!=', 'admin');
 
 
-Route::get("{slug}", 'Lasallesoftware\Blogfrontend\Http\Controllers\DisplaySinglePostController@DisplaySinglePost');
+Route::get('{slug}', 'Lasallesoftware\Blogfrontend\Http\Controllers\DisplaySinglePostController@DisplaySinglePost');
+
+

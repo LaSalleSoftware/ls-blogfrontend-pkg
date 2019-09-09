@@ -23,44 +23,130 @@
 namespace Lasallesoftware\Blogfrontend\Http\Controllers;
 
 // LaSalle Software
+use Illuminate\Support\MessageBag;
 use Lasallesoftware\Library\Common\Http\Controllers\CommonControllerForClients;
 
-// Third party classes
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
 
 class DisplaySinglePostController extends CommonControllerForClients
 {
+    /**
+     * The message bag instance.
+     *
+     * @var \Illuminate\Support\MessageBag
+     */
+    protected $messages;
 
-    public function DisplaySinglePost()
+
+    public function DisplaySinglePost($slug)
     {
         $comment = 'Created by ' .
             config('lasallesoftware-library.lasalle_app_domain_name') .
             "'s Lasallesoftware\Blogfrontend\Http\Controllers\DisplaySinglePostController"
         ;
 
+        $path = ':8888/api/v1/singlearticleblog';
+
+
+        $response = $this->sendRequestToLasalleBackend($comment, $path, $slug);
+
+        if ($response instanceof \GuzzleHttp\Psr7\Response) {
+
+            $body = json_decode($response->getBody());
+
+            echo "<br> INSTANCEOF GuzzleHttp\Psr7\Response!";
+            echo "<br> status code = " . $response->getStatusCode();
+            //echo "<br> message = "     . $body->message;
+
+            //$this->viewPost($body->post, $body->tags);
+            $this->viewPost($body->post);
+            $this->viewTags($body->tags);
+            //$this->viewPostupdates($body->postupdates);
+
+            echo "<br>there are " . count($body->postupdates) . " post updates";
+
+        } else {
+
+            echo "<br> status code = " . $this->messages->first('StatusCode');
+            echo "<br> error       = " . $this->messages->first('Error');
+            echo "<br> reason      = " . $this->messages->first('Reason');
+
+        }
+
+
+
+        /*
+        if ($response->getStatusCode() >= 300) {
+            $this->createTheErrorMessageBag($response->getStatusCode(), $response->getBody());
+        } else {
+            $body = json_decode($response->getBody());
+            echo "<br>" . $response->getStatusCode() . " and " . $body->reason;
+            echo "<pre>";
+            print_r($body);
+        }
+
+        if ($this->messages->has('StatusCode')) {
+            //$this->messages->first('email');
+        }
+        */
+
+        /*
+        try {
+            $response = $this->sendRequestToLasalleBackend($comment, $path);
+
+            $body = json_decode($response->getBody());
+            echo "<br>" . $response->getStatusCode() . " and " . $body->reason;
+            echo "<pre>";
+            print_r($body);
+
+        //} catch (RequestException $e) {
+        } catch (\Exception $e) {
+
+            $this->createTheErrorMessageBag($response->getStatusCode(), $response->getBody());
+
+            echo "<br> status code = " . $this->messages->first('StatusCode');
+            echo "<br> message = " .     $this->messages->first('Message');
+            echo "<br> reason = " .      $this->messages->first('Reason');
+
+        }
+        */
+
+
+
+        return;
+
+
+
+
+
+
+
 
         try {
+            $response = $this->sendRequestToLasalleBackend($comment, $path);
 
-            $response = $this->xx($comment);
+
 
             // Here the code for successful request
             $body = json_decode($response->getBody());
 
 
 
+            //$this->messages->add('StatusCode', $response->getStatusCode());
+
 
 
 
             //echo "<h1>" . $getUrl . "</h1>";
             echo "<h1>" . $response->getStatusCode() . "</h1>";
-            echo "<br>message = " . $body->message;
+            echo "message = " . $body->message;
 
 
 
 
             //$this->viewPost($body->post, $body->tags);
+            $this->viewPost($body->post);
 
             //$this->viewPostupdates($body->postupdates);
 
@@ -112,7 +198,7 @@ class DisplaySinglePostController extends CommonControllerForClients
         }
     }
 
-    public function viewPost($post, $tags)
+    public function viewPost($post, $tags=null)
     {
         echo (is_null($post->featured_image)) ? "<br>(there is no featured_image)" : "<br>'('.featured_image: ".$post->featured_image.')';
         echo "<h1>" . $post->title . "</h1>";
@@ -120,12 +206,13 @@ class DisplaySinglePostController extends CommonControllerForClients
         echo "<br>by " . $post->author;
         echo "<br>"  .$post->date;
         echo (is_null($post->category_name)) ? '' : "<br>category: " . $post->category_name;
-        echo (is_null($tags)) ? '' : $this->viewTags($tags) ;
+    //    echo (is_null($tags)) ? '' : $this->viewTags($tags) ;
         echo "<br><br>";
         echo "(excerpt: " . $post->excerpt . ")";
         echo "<br><br>(meta_description: " . $post->meta_description . ")";
         echo "<br><br>" .  $post->content;
 
+        return;
     }
 
     public function viewTags($tags)
