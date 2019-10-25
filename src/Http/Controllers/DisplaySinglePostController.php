@@ -23,6 +23,7 @@
 namespace Lasallesoftware\Blogfrontend\Http\Controllers;
 
 // LaSalle Software
+use http\Exception\BadQueryStringException;
 use Illuminate\Support\MessageBag;
 use Lasallesoftware\Library\Common\Http\Controllers\CommonControllerForClients;
 
@@ -46,204 +47,212 @@ class DisplaySinglePostController extends CommonControllerForClients
             "'s Lasallesoftware\Blogfrontend\Http\Controllers\DisplaySinglePostController"
         ;
 
-        $path = ':8888/api/v1/singlearticleblog';
-
+        $path = $this->getApiPath('singlearticleblog');
 
         $response = $this->sendRequestToLasalleBackend($comment, $path, $slug);
 
-        if ($response instanceof \GuzzleHttp\Psr7\Response) {
+        //if ($response instanceof \GuzzleHttp\Psr7\Response) {
+        if (!isset($this->messages)) {
 
             $body = json_decode($response->getBody());
 
-            echo "<br> INSTANCEOF GuzzleHttp\Psr7\Response!";
-            echo "<br> status code = " . $response->getStatusCode();
-            //echo "<br> message = "     . $body->message;
 
-            //$this->viewPost($body->post, $body->tags);
-            $this->viewPost($body->post);
-            $this->viewTags($body->tags);
-            //$this->viewPostupdates($body->postupdates);
+            /*
+            echo "<h1>featured image!</h1>";
+            echo "image = " . $body->post->featured_image;
+            echo "<br><br>type = " . $body->post->featured_image_type;
+            echo "<br><br>social media = " . $body->post->featured_image_social_meta_tag;
+            return;
+            */
 
-            echo "<br>there are " . count($body->postupdates) . " post updates";
+
+            return view(config('lasallesoftware-frontendapp.lasalle_path_to_front_end_view_path') . '.blog.pages.singleblogpost', [
+                'title'               => $body->post->title,
+                'author'              => $body->post->author,
+                'publish_on'          => $this->formatDate($body->post->publish_on),
+                'category'            => $this->getCategoryLinkHtml($body->post->category),
+                'content'             => $body->post->content,
+                'featured_image'      => $body->post->featured_image,
+                'featured_image_type' => $body->post->featured_image_type,
+                'copyright'           => env('LASALLE_COPYRIGHT_IN_FOOTER'),
+                'socialMediaMetaTags' => $this->getSocialMediaMetaTags($body->post),
+                'numberOfTags'        => $this->getTheNumberOfTags($body->tags),
+                'tags'                => $this->transformTags($body->tags),
+                'numberOfPostupdates' => $this->getTheNumberOfPostupdates($body->postupdates),
+                'postupdates'         => $this->transformPostupdates($body->postupdates),
+            ]);
 
         } else {
 
-            echo "<br> status code = " . $this->messages->first('StatusCode');
-            echo "<br> error       = " . $this->messages->first('Error');
-            echo "<br> reason      = " . $this->messages->first('Reason');
-
-        }
-
-
-
-        /*
-        if ($response->getStatusCode() >= 300) {
-            $this->createTheErrorMessageBag($response->getStatusCode(), $response->getBody());
-        } else {
-            $body = json_decode($response->getBody());
-            echo "<br>" . $response->getStatusCode() . " and " . $body->reason;
-            echo "<pre>";
-            print_r($body);
-        }
-
-        if ($this->messages->has('StatusCode')) {
-            //$this->messages->first('email');
-        }
-        */
-
-        /*
-        try {
-            $response = $this->sendRequestToLasalleBackend($comment, $path);
-
-            $body = json_decode($response->getBody());
-            echo "<br>" . $response->getStatusCode() . " and " . $body->reason;
-            echo "<pre>";
-            print_r($body);
-
-        //} catch (RequestException $e) {
-        } catch (\Exception $e) {
-
-            $this->createTheErrorMessageBag($response->getStatusCode(), $response->getBody());
-
-            echo "<br> status code = " . $this->messages->first('StatusCode');
-            echo "<br> message = " .     $this->messages->first('Message');
-            echo "<br> reason = " .      $this->messages->first('Reason');
-
-        }
-        */
-
-
-
-        return;
-
-
-
-
-
-
-
-
-        try {
-            $response = $this->sendRequestToLasalleBackend($comment, $path);
-
-
-
-            // Here the code for successful request
-            $body = json_decode($response->getBody());
-
-
-
-            //$this->messages->add('StatusCode', $response->getStatusCode());
-
-
-
-
-            //echo "<h1>" . $getUrl . "</h1>";
-            echo "<h1>" . $response->getStatusCode() . "</h1>";
-            echo "message = " . $body->message;
-
-
-
-
-            //$this->viewPost($body->post, $body->tags);
-            $this->viewPost($body->post);
-
-            //$this->viewPostupdates($body->postupdates);
-
-            //echo "<br><br>---- end of post! -----<br>";
-
-            //echo "<h1>token = "  . $body->token;
-            //echo "<br>domain = " . $body->domain;
-
-
-
-
-        } catch (RequestException $e) {
-
-            // BAD REQUEST
-            // The server cannot or will not process the request due to something that is perceived to be a client error
-            // (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
-            // https://httpstatuses.com/400
-            if ($e->getResponse()->getStatusCode() == '400') {
-                echo "Got response 400 - Bad Request";
-            }
-
-            // UNAUTHORIZED
-            // The request has not been applied because it lacks valid authentication credentials for the target resource.
-            // https://httpstatuses.com/401
-            if ($e->getResponse()->getStatusCode() == '401') {
-                echo "Got response 401 - Unauthorized";
-            }
-
-            // FORBIDDEN
-            // The server understood the request but refuses to authorize it.
-            // https://httpstatuses.com/403
-            if ($e->getResponse()->getStatusCode() == '403') {
-                echo "Got response 404 - Forbidden";
-            }
-
-            // NOT FOUND
-            // The origin server did not find a current representation for the target resource or
-            // is not willing to disclose that one exists.
-            // https://httpstatuses.com/404
-            if ($e->getResponse()->getStatusCode() == '404') {
-                echo "Got response 404 - Not Found";
-            }
-
-        } catch (\Exception $e) {
-
-            // There was another exception.
-            echo "No response was received. No status code nor any diagnostic information was given to us.";
-
+            return view(config('lasallesoftware-frontendapp.lasalle_path_to_front_end_view_path') . '.errors.main', [
+                'status_code'         => $this->messages->first('StatusCode'),
+                'error'               => $this->messages->first('Error'),
+                'reason'              => $this->messages->first('Reason'),
+                'copyright'           => env('LASALLE_COPYRIGHT_IN_FOOTER'),
+            ]);
         }
     }
 
-    public function viewPost($post, $tags=null)
+    /**
+     * Format date from a date string.
+     *
+     * @param  string  $date     2019-09-29T04:00:00.000000Z
+     * @return string
+     */
+    private function formatDate($date)
     {
-        echo (is_null($post->featured_image)) ? "<br>(there is no featured_image)" : "<br>'('.featured_image: ".$post->featured_image.')';
-        echo "<h1>" . $post->title . "</h1>";
-        echo "(slug = " . $post->slug . ")";
-        echo "<br>by " . $post->author;
-        echo "<br>"  .$post->date;
-        echo (is_null($post->category_name)) ? '' : "<br>category: " . $post->category_name;
-    //    echo (is_null($tags)) ? '' : $this->viewTags($tags) ;
-        echo "<br><br>";
-        echo "(excerpt: " . $post->excerpt . ")";
-        echo "<br><br>(meta_description: " . $post->meta_description . ")";
-        echo "<br><br>" .  $post->content;
-
-        return;
+        return date(config('lasallesoftware-frontendapp.lasalle_date_format'),strtotime($date));
     }
 
-    public function viewTags($tags)
+    /**
+     * Get the link to the category listing.
+     *
+     * Return the full html <img> tag.
+     *
+     * @param  string  $category   The category name.
+     * @return string
+     */
+    private function getCategoryLinkHtml($category)
     {
-        $counter = 1;
-        $numberOfTags = count($tags);
-        echo "<br>tags: ";
-        foreach ($tags as $tag) {
-
-            echo $tag->title;
-            if ($counter < $numberOfTags) {
-                echo ", ";
-            }
-            $counter++;
-        }
+        return '<a href="' . env('APP_URL') . '/category/' . strtolower($category) . '">' . strtolower($category) . '</a>';
     }
 
-    public function viewPostupdates($postupdates)
+    /**
+     * Get the social media meta tags.
+     *
+     * @param  object  $post
+     * @return array
+     */
+    private function getSocialMediaMetaTags($post)
     {
-        if (!is_null($postupdates)) {
+        // ...put all the social media meta tag info together
+        // https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started
+        // https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/summary-card-with-large-image
+        // https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/markup
+        // https://ogp.me/
+        return [
+            'twitter_card' => 'summary_large_image',
+            'og_type'      => 'article',
+            'title'        => $post->title,
+            'description'  => $post->excerpt,
+            'url'          => env('APP_URL') . '/' . $post->slug,
+            'site'         => $this->getSocialMediaMetaTagSite(),
+            'creator'      => $this->getSocialMediaMetaTagCreator(),
+            'image'        => $post->featured_image_social_meta_tag,
+        ];
+    }
 
-            (count($postupdates) == 1) ? $word = "is" : $word = "are";
+    /**
+     * Get the value of the twitter:site social media meta tag.
+     *
+     * https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/markup
+     *
+     * @return string
+     */
+    private function getSocialMediaMetaTagSite()
+    {
+        return config('lasallesoftware-frontendapp.lasalle_social_media_meta_tag_site');
+    }
 
-            echo "<br><h2>There " . $word . " " . count($postupdates) ." Updates For This Post!</h2>";
-
-            foreach ($postupdates as $postupdate) {
-                echo "<h3>" . $postupdate->title . "</h3>";
-                echo $postupdate->date;
-                echo "<br>(excerpt: " . $postupdate->excerpt . ")";
-                echo "<br>" . $postupdate->content;
-            }
+    /**
+     * Get the value of the twitter:creator social media meta tag.
+     *
+     * https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/markup
+     *
+     * @return string
+     */
+    private function getSocialMediaMetaTagCreator()
+    {
+        if (config('lasallesoftware-frontendapp.lasalle_social_media_meta_tag_creator') == '') {
+            return config('lasallesoftware-frontendapp.lasalle_social_media_meta_tag_site');
         }
+
+        return config('lasallesoftware-frontendapp.lasalle_social_media_meta_tag_creator');
+    }
+
+    /**
+     * Get the number of tags.
+     *
+     * @param  collection  $tags
+     * @return int
+     */
+    private function getTheNumberOfTags($tags)
+    {
+        return count($tags);
+    }
+
+    /**
+     * Prepare the post updates for the view.
+     *
+     * @param  object  $tags
+     * @return Illuminate\Support\Collection | null
+     */
+    private function transformTags($tags)
+    {
+        if ($this->getTheNumberOfTags($tags) == 0) return null;
+
+        $transformedTags = [];
+        foreach ($tags as $tag)
+        {
+            $transformedPostupdates[] = [
+                'title' => $tag->title,
+                'link'  => $this->getTagLinkHtml($tag->title) ];
+        }
+
+        $collection = collect($transformedPostupdates);
+
+        //return $collection->sortByDesc('title');
+        return $collection->sortBy('title');
+    }
+
+    /**
+     * Get the link to the tag listing.
+     *
+     * Return the full html <img> tag.
+     *
+     * @param  string  $tag   The title field in the tag record.
+     * @return string
+     */
+    private function getTagLinkHtml($tag)
+    {
+        return '<a href="' . env('APP_URL') . '/tags/' . strtolower($tag) . '">' . strtolower($tag) . '</a>';
+    }
+
+    /**
+     * Get the number of post updates.
+     *
+     * @param  object  $postupdates
+     * @return int
+     */
+    private function getTheNumberOfPostupdates($postupdates)
+    {
+        return count($postupdates);
+    }
+
+    /**
+     * Prepare the post updates for the view.
+     *
+     * @param object  $postupdates
+     * @return Illuminate\Support\Collection | null
+     */
+    private function transformPostupdates($postupdates)
+    {
+        if ($this->getTheNumberOfPostupdates($postupdates) == 0) return null;
+
+        $transformedPostupdates = [];
+        foreach ($postupdates as $postupdate)
+        {
+            $transformedPostupdates[] = [
+              'title'      => $postupdate->title,
+              'publish_on' => $this->formatDate($postupdate->publish_on),
+              'excerpt'    => $postupdate->excerpt,
+              'content'    => $postupdate->content,
+            ];
+        }
+
+        $collection = collect($transformedPostupdates);
+
+        //return $collection->sortByDesc('publish_on');
+        return $collection->sortBy('publish_on');
     }
 }
