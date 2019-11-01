@@ -20,13 +20,14 @@
  *
  */
 
-Route::get('/playtest', 'Lasallesoftware\Blogfrontend\Http\Controllers\PlaytestController@Index');
+Route::get('blog/feed',                     'Lasallesoftware\Blogfrontend\Http\Controllers\DisplayBlogRSSFeedController@DisplayBlogRSSFeed');
+Route::get('blog/all',                      'Lasallesoftware\Blogfrontend\Http\Controllers\DisplayAllBlogPostsController@DisplayAllBlogPosts');
+Route::get('category/{categoryTitle}',      'Lasallesoftware\Blogfrontend\Http\Controllers\DisplayBlogPostsForACategoryController@DisplayBlogPostsForACategory');
+Route::get('author/{authorNamecalculated}', 'Lasallesoftware\Blogfrontend\Http\Controllers\DisplayBlogPostsForAnAuthorController@DisplayBlogPostsForAnAuthor');
+Route::get('tag/{tagTitle}',                'Lasallesoftware\Blogfrontend\Http\Controllers\DisplayBlogPostsForATagController@DisplayBlogPostsForATag');
 
-Route::get('/blogplay', 'Lasallesoftware\Blogfrontend\Http\Controllers\PlaytestController@PingBackendBlogplay');
 
-// single post by slug, or category listing (by title)
 //$router->get('{slug}', '\Lasallecms\Lasallecmsfrontend\Http\Controllers\PostController@DisplaySinglePost')->where('slug', '!=', 'admin');
-
 
 Route::get('{slug}', 'Lasallesoftware\Blogfrontend\Http\Controllers\DisplaySinglePostController@DisplaySinglePost');
 
