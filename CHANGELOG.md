@@ -1,6 +1,9 @@
 # CHANGE LOG
 
-## VERSION 2.0.2 (coming!)
+## VERSION 2.0.3 (coming!)
+
+## VERSION 2.0.2 (February 03, 2020)
+* [v2.0.2 issues](https://github.com/LaSalleSoftware/lsv2-blogfrontend-pkg/milestone/5?closed=1)
 
 ## VERSION 2.0.1 (January 07, 2020)
 * [v2.0.1 issues](https://github.com/LaSalleSoftware/lsv2-blogfrontend-pkg/milestone/4?closed=1)
