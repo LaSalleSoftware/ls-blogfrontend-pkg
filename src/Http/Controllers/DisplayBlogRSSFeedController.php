@@ -58,9 +58,11 @@ class DisplayBlogRSSFeedController extends CommonControllerForClients
             "'s Lasallesoftware\Blogfrontend\Http\Controllers\DisplayBlogRSSFeedController"
         ;
 
+        $uuid = $this->makeUuid($comment, 9);
+
         $path = $this->getApiPath('blogrssfeed');
 
-        $response = $this->sendRequestToLasalleBackend($comment, $path);
+        $response = $this->sendRequestToLasalleBackend($uuid, $path);
 
         //if ($response instanceof \GuzzleHttp\Psr7\Response) {
         if (!isset($this->messages)) {

@@ -50,9 +50,11 @@ class DisplayBlogPostsForATagController extends CommonControllerForClients
             "'s Lasallesoftware\Blogfrontend\Http\Controllers\DisplayBlogPostsForAnAuthorControllerr"
         ;
 
+        $uuid = $this->makeUuid($comment, 9);
+
         $path = $this->getApiPath('alltagblogposts');
 
-        $response = $this->sendRequestToLasalleBackend($comment, $path, $tagTitle);
+        $response = $this->sendRequestToLasalleBackend($uuid, $path, $tagTitle);
 
         //if ($response instanceof \GuzzleHttp\Psr7\Response) {
         if (!isset($this->messages)) {

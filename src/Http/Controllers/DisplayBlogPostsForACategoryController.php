@@ -50,9 +50,11 @@ class DisplayBlogPostsForACategoryController extends CommonControllerForClients
             "'s Lasallesoftware\Blogfrontend\Http\Controllers\DisplayBlogPostsForACategoryController"
         ;
 
+        $uuid = $this->makeUuid($comment, 9);
+
         $path = $this->getApiPath('allcategoryblogposts');
 
-        $response = $this->sendRequestToLasalleBackend($comment, $path, $categoryTitle);
+        $response = $this->sendRequestToLasalleBackend($uuid, $path, $categoryTitle);
 
         //if ($response instanceof \GuzzleHttp\Psr7\Response) {
         if (!isset($this->messages)) {

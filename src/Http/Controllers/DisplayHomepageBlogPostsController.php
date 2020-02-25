@@ -24,6 +24,7 @@ namespace Lasallesoftware\Blogfrontend\Http\Controllers;
 
 // LaSalle Software
 use Lasallesoftware\Library\Common\Http\Controllers\CommonControllerForClients;
+use Lasallesoftware\Contactform\SecurityQuestionhelper;
 
 // Laravel Framework
 use Illuminate\Support\MessageBag;
@@ -42,7 +43,7 @@ class DisplayHomepageBlogPostsController extends CommonControllerForClients
     protected $messages;
 
 
-    public function DisplayHomepageBlogPosts()
+    public function DisplayHomepageBlogPosts(SecurityQuestionhelper $securityQuestionhelper)
     {
         // comment is for the UUID database table
         $comment = 'Created by ' .
@@ -50,9 +51,11 @@ class DisplayHomepageBlogPostsController extends CommonControllerForClients
             "'s Lasallesoftware\Blogfrontend\Http\Controllers\DisplayHomepageBlogPostsController"
         ;
 
+        $uuid = $this->makeUuid($comment, 9);
+
         $path = $this->getApiPath('homepageblogposts');
 
-        $response = $this->sendRequestToLasalleBackend($comment, $path);
+        $response = $this->sendRequestToLasalleBackend($uuid, $path);
 
         if (!isset($this->messages)) {
 
@@ -78,12 +81,22 @@ class DisplayHomepageBlogPostsController extends CommonControllerForClients
             $transformedPosts = false;
         }
 
+        // Prepare for the security question
+        $question['first_number'] = $securityQuestionhelper->getRandomNumber();
+        $question['second_number'] = $securityQuestionhelper->getRandomNumber();
+
+        // Please note that the UUID is not available, because the UUID is generated when the JWT is created
+        // in https://github.com/LaSalleSoftware/lsv2-blogfrontend-pkg/blob/master/src/JWT/Factory.php
+        // so that both can use the same comment. 
+    
         return view(config('lasallesoftware-frontendapp.lasalle_path_to_front_end_view_path') . '.home', [
             'posts'                                => $transformedPosts,
             'numberOfPosts'                        => ($transformedPosts) ? count($transformedPosts) : 0,
             'copyright'                            => env('LASALLE_COPYRIGHT_IN_FOOTER'),
             'socialMediaMetaTags'                  => $this->getSocialMediaMetaTags(),
             'featured_image_social_media_meta_tag' => config('lasallesoftware-frontendapp.lasalle_social_media_meta_tag_default_image'),
+            'question'                             => $question,
+            'uuid'                                 => 'from the home page',
         ]);
     }
 

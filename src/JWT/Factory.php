@@ -22,9 +22,6 @@
 
 namespace Lasallesoftware\Blogfrontend\JWT;
 
-// LaSalle Software
-use Lasallesoftware\Library\UniversallyUniqueIDentifiers\UuidGenerator;
-
 // Third party classes
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
@@ -33,25 +30,6 @@ use Lcobucci\JWT\Signer\Key;
 
 class Factory
 {
-    /**
-     * @var Lasallesoftware\Library\UniversallyUniqueIDentifiers\UuidGenerator
-     */
-    protected $uuidGenerator;
-
-    /**
-     * @var string
-     */
-    protected $uuidComment;
-
-
-    /**
-     * @param  UuidGenerator  $uuidGenerator
-     */
-    public function __construct(UuidGenerator  $uuidGenerator)
-    {
-        $this->uuidGenerator = $uuidGenerator;
-    }
-
     /**
      * Create a JWT
      *
@@ -70,7 +48,7 @@ class Factory
      *
      * @return string
      */
-    public function createJWT($comment = null)
+    public function createJWT($uuid)
     {
         $signer    = new Sha256();
         $key       = config('lasallesoftware-frontendapp.lasalle_jwt_key');
@@ -78,7 +56,7 @@ class Factory
 
         $issClaim  = app('config')->get('lasallesoftware-library.lasalle_app_domain_name');
         $audClaim  = env('LASALLE_JWT_AUD_CLAIM');
-        $jtiClaim  = $this->makeUuid($comment);
+        $jtiClaim  = $uuid;
         $iatClaim  = $time;
         $nbfClaim  = $time + 60;  // not used, but left as a placeholder
         $expClaim  = $time + config('lasallesoftware-library.lasalle_jwt_exp_claim_seconds_to_expiration');;
@@ -94,10 +72,5 @@ class Factory
         ;
 
         return $token;
-    }
-
-    public function makeUuid($comment)
-    {
-        return $this->uuidGenerator->createUuid(9, $comment, 1);
     }
 }

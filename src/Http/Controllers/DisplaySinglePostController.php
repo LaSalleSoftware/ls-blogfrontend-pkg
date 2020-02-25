@@ -50,9 +50,11 @@ class DisplaySinglePostController extends CommonControllerForClients
             "'s Lasallesoftware\Blogfrontend\Http\Controllers\DisplaySinglePostController"
         ;
 
+        $uuid = $this->makeUuid($comment, 9);
+
         $path = $this->getApiPath('singleblogpost');
 
-        $response = $this->sendRequestToLasalleBackend($comment, $path, $slug);
+        $response = $this->sendRequestToLasalleBackend($uuid, $path, $slug);
 
         //if ($response instanceof \GuzzleHttp\Psr7\Response) {
         if (!isset($this->messages)) {
