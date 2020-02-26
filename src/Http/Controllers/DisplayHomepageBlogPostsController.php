@@ -81,8 +81,8 @@ class DisplayHomepageBlogPostsController extends CommonControllerForClients
             $transformedPosts = false;
         }
 
-        // Prepare for the security question
-        $question['first_number'] = $securityQuestionhelper->getRandomNumber();
+        // Prepare the security question
+        $question['first_number']  = $securityQuestionhelper->getRandomNumber();
         $question['second_number'] = $securityQuestionhelper->getRandomNumber();
 
     
