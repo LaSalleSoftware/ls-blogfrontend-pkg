@@ -24,7 +24,7 @@ namespace Lasallesoftware\Blogfrontend\Http\Controllers;
 
 // LaSalle Software
 use Lasallesoftware\Library\Common\Http\Controllers\CommonControllerForClients;
-use Lasallesoftware\Contactform\SecurityQuestionhelper;
+use Lasallesoftware\Contactformfrontend\SecurityQuestionhelper;
 
 // Laravel Framework
 use Illuminate\Support\MessageBag;
