@@ -23,8 +23,10 @@
 namespace Lasallesoftware\Blogfrontend\Http\Controllers;
 
 // LaSalle Software
-use Lasallesoftware\Library\Common\Http\Controllers\CommonControllerForClients;
 use Lasallesoftware\Contactformfrontend\SecurityQuestionhelper;
+use Lasallesoftware\Blogfrontend\Helpers\APIRequestsToTheBackendHelper;
+use Lasallesoftware\Library\APIRequestsToTheBackend\HttpRequestToAdminBackend;
+use Lasallesoftware\Library\Common\Http\Controllers\CommonControllerForClients;
 
 // Laravel Framework
 use Illuminate\Support\MessageBag;
@@ -35,6 +37,8 @@ use GuzzleHttp\Exception\RequestException;
 
 class DisplayHomepageBlogPostsController extends CommonControllerForClients
 {
+    use APIRequestsToTheBackendHelper, HttpRequestToAdminBackend;
+
     /**
      * The message bag instance.
      *
@@ -53,9 +57,10 @@ class DisplayHomepageBlogPostsController extends CommonControllerForClients
 
         $uuid = $this->makeUuid($comment, 9);
 
-        $path = $this->getApiPath('homepageblogposts');
+        $endpointPath = $this->getEndpointPath('DisplayHomepageBlogPostsController');
+        $httpRequest  = 'GET';
 
-        $response = $this->sendRequestToLasalleBackend($uuid, $path);
+        $response = $this->sendRequestToLasalleBackend($uuid, $endpointPath, $httpRequest);
 
         if (!isset($this->messages)) {
 
