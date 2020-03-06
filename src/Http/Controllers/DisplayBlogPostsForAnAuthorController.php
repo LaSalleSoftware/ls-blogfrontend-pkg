@@ -23,6 +23,8 @@
 namespace Lasallesoftware\Blogfrontend\Http\Controllers;
 
 // LaSalle Software
+use Lasallesoftware\Blogfrontend\Helpers\APIRequestsToTheBackendHelper;
+use Lasallesoftware\Library\APIRequestsToTheBackend\HttpRequestToAdminBackend;
 use Lasallesoftware\Library\Common\Http\Controllers\CommonControllerForClients;
 
 // Laravel Framework
@@ -34,6 +36,8 @@ use GuzzleHttp\Exception\RequestException;
 
 class DisplayBlogPostsForAnAuthorController extends CommonControllerForClients
 {
+    use APIRequestsToTheBackendHelper, HttpRequestToAdminBackend;
+
     /**
      * The message bag instance.
      *
@@ -50,11 +54,12 @@ class DisplayBlogPostsForAnAuthorController extends CommonControllerForClients
             "'s Lasallesoftware\Blogfrontend\Http\Controllers\DisplayBlogPostsForAnAuthorControllerr"
         ;
 
-        $uuid = $this->makeUuid($comment, 9);
+        $uuid         = $this->makeUuid($comment, 9);
+        $endpointPath = $this->getEndpointPath('allauthorblogposts');
+        $httpRequest  = 'GET';
+        $slug         = $authorNamecalculated; 
 
-        $path = $this->getApiPath('allauthorblogposts');
-
-        $response = $this->sendRequestToLasalleBackend($uuid, $path, $authorNamecalculated);
+        $response = $this->sendRequestToLasalleBackend($uuid, $endpointPath, $httpRequest, $slug);
 
         //if ($response instanceof \GuzzleHttp\Psr7\Response) {
         if (!isset($this->messages)) {
