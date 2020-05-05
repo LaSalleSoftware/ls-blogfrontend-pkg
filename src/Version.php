@@ -29,21 +29,21 @@ class Version
      *
      * @var string
      */
-    const VERSION = '2.0.4';
+    const VERSION = '2.1.0';
 
     /**
      * This package's release date.
      *
      * @var string
      */
-    const RELEASEDATE = 'April 18, 2020';
+    const RELEASEDATE = 'May 04, 2020';
 
     /**
      * This package's name.
      *
      * @var string
      */
-    const PACKAGE = 'LaSalle Software v2 Blog Front-end Package';
+    const PACKAGE = 'Blog front-end Package for my LaSalle Software';
 
     /**
      * Get the version number of this package.
