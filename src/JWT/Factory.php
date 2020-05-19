@@ -73,9 +73,4 @@ class Factory
 
         return $token;
     }
-
-    public function bob()
-    {
-        return "can you hear me??";
-    }
 }
