@@ -1,8 +1,8 @@
 # LaSalle Software's Blog Front-end Package
 
 <p align="center">
-<a href="https://packagist.org/packages/lasallesoftware/lsv2-blogfrontend-pkg"><img src="https://poser.pugx.org/lasallesoftware/lsv2-blogfrontend-pkg/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/lasallesoftware/lsv2-blogfrontend-pkg"><img src="https://poser.pugx.org/lasallesoftware/lsv2-blogfrontend-pkg/license.svg" alt="License"></a>
+<a href="https://packagist.org/packages/lasallesoftware/ls-blogfrontend-pkg"><img src="https://poser.pugx.org/lasallesoftware/ls-blogfrontend-pkg/v/stable.svg" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/lasallesoftware/ls-blogfrontend-pkg"><img src="https://poser.pugx.org/lasallesoftware/ls-blogfrontend-pkg/license.svg" alt="License"></a>
 <a href="https://laravel.com/"><img src="https://img.shields.io/badge/Laravel-v6-brightgreen.svg?style=flat-square" alt="Laravel v6.x"></a> 
 </p>
 
