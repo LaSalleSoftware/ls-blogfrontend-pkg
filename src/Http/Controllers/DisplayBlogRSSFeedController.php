@@ -23,9 +23,8 @@
 namespace Lasallesoftware\Blogfrontend\Http\Controllers;
 
 // LaSalle Software
-use Lasallesoftware\Blogfrontend\Helpers\APIRequestsToTheBackendHelper;
-use Lasallesoftware\Library\APIRequestsToTheBackend\HttpRequestToAdminBackend;
-use Lasallesoftware\Library\Common\Http\Controllers\CommonControllerForClients;
+use Lasallesoftware\Libraryfrontend\APIRequestsToTheBackend\HttpRequestToAdminBackend;
+
 
 // Laravel Framework
 use Illuminate\Http\Response;
@@ -40,9 +39,9 @@ use GuzzleHttp\Exception\RequestException;
  *
  * @package Lasallesoftware\Blogfrontend\Http\Controllers
  */
-class DisplayBlogRSSFeedController extends CommonControllerForClients
+class DisplayBlogRSSFeedController extends BaseFrontendController
 {
-    use APIRequestsToTheBackendHelper, HttpRequestToAdminBackend;
+    use HttpRequestToAdminBackend;
 
     /**
      * The message bag instance.

@@ -20,9 +20,12 @@
  *
  */
 
-namespace Lasallesoftware\Blogfrontend\Helpers;
+namespace Lasallesoftware\Blogfrontend\Http\Controllers;
 
-trait APIRequestsToTheBackendHelper
+// LaSalle Software
+use Lasallesoftware\Libraryfrontend\Common\Http\Controllers\CommonController;
+
+class BaseFrontendController extends CommonController
 {
     /**
      * Map blog front-end controller and job classes to their admin back-end endpoints.

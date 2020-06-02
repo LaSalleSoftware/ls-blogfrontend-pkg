@@ -24,9 +24,7 @@ namespace Lasallesoftware\Blogfrontend\Http\Controllers;
 
 // LaSalle Software
 use Lasallesoftware\Contactformfrontend\SecurityQuestionhelper;
-use Lasallesoftware\Blogfrontend\Helpers\APIRequestsToTheBackendHelper;
-use Lasallesoftware\Library\APIRequestsToTheBackend\HttpRequestToAdminBackend;
-use Lasallesoftware\Library\Common\Http\Controllers\CommonControllerForClients;
+use Lasallesoftware\Libraryfrontend\APIRequestsToTheBackend\HttpRequestToAdminBackend;
 
 // Laravel Framework
 use Illuminate\Support\MessageBag;
@@ -35,9 +33,9 @@ use Illuminate\Support\MessageBag;
 use GuzzleHttp\Exception\RequestException;
 
 
-class DisplayHomepageBlogPostsController extends CommonControllerForClients
+class DisplayHomepageBlogPostsController extends BaseFrontendController
 {
-    use APIRequestsToTheBackendHelper, HttpRequestToAdminBackend;
+    use HttpRequestToAdminBackend;
 
     /**
      * The message bag instance.
