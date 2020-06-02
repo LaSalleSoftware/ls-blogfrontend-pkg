@@ -47,14 +47,6 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
 
     public function DisplayHomepageBlogPosts(SecurityQuestionhelper $securityQuestionhelper)
     {
-        // comment is for the UUID database table
-        $comment = 'Created by ' .
-            config('lasallesoftware-library.lasalle_app_domain_name') .
-            "'s Lasallesoftware\Blogfrontend\Http\Controllers\DisplayHomepageBlogPostsController"
-        ;
-
-        $uuid = $this->makeUuid($comment, 9);
-
         $endpointPath = $this->getEndpointPath('DisplayHomepageBlogPostsController');
         $httpRequest  = 'GET';
 
@@ -115,8 +107,8 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
         return [
             'twitter_card' => 'summary_large_image',
             'og_type'      => 'website',
-            'title'        => env('APP_NAME'),
-            'description'  => env('APP_NAME') . ' home page',
+            'title'        => config('app.name'),
+            'description'  => config('app.name') . ' home page',
             'url'          => url()->full(),
             'site'         => $this->getSocialMediaMetaTagSite(),
             'creator'      => $this->getSocialMediaMetaTagCreator(),

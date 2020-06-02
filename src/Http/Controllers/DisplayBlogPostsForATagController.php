@@ -46,18 +46,11 @@ class DisplayBlogPostsForATagController extends BaseFrontendController
 
     public function DisplayBlogPostsForATag($tagTitle)
     {
-        // comment is for the UUID database table
-        $comment = 'Created by ' .
-            config('lasallesoftware-library.lasalle_app_domain_name') .
-            "'s Lasallesoftware\Blogfrontend\Http\Controllers\DisplayBlogPostsForAnAuthorControllerr"
-        ;
-
-        $uuid         = $this->makeUuid($comment, 9);
         $endpointPath = $this->getEndpointPath('alltagblogposts');
         $httpRequest  = 'GET';
         $slug         = $tagTitle; 
 
-        $response = $this->sendRequestToLasalleBackend($uuid, $endpointPath, $httpRequest, $slug);
+        $response = $this->sendRequestToLasalleBackend($endpointPath, $httpRequest, $slug);
 
         //if ($response instanceof \GuzzleHttp\Psr7\Response) {
         if (!isset($this->messages)) {
@@ -97,7 +90,7 @@ class DisplayBlogPostsForATagController extends BaseFrontendController
         return [
             'twitter_card' => 'summary_large_image',
             'og_type'      => 'website',
-            'title'        => env('APP_NAME'),
+            'title'        => config('app.name'),
             'description'  => '',
             'url'          => url()->full(),
             'site'         => $this->getSocialMediaMetaTagSite(),

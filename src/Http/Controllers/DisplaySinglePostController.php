@@ -56,7 +56,7 @@ class DisplaySinglePostController extends BaseFrontendController
         $endpointPath = $this->getEndpointPath('singleblogpost');
         $httpRequest  = 'GET';
 
-        $response = $this->sendRequestToLasalleBackend($uuid, $endpointPath, $httpRequest, $slug);
+        $response = $this->sendRequestToLasalleBackend($endpointPath, $httpRequest, $slug);
 
         //if ($response instanceof \GuzzleHttp\Psr7\Response) {
         if (!isset($this->messages)) {
