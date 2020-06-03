@@ -50,7 +50,7 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
         $endpointPath = $this->getEndpointPath('DisplayHomepageBlogPostsController');
         $httpRequest  = 'GET';
 
-        $response = $this->sendRequestToLasalleBackend($uuid, $endpointPath, $httpRequest);
+        $response = $this->sendRequestToLasalleBackend($endpointPath, $httpRequest);
 
         if (!isset($this->messages)) {
 
@@ -88,7 +88,6 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
             'socialMediaMetaTags'                  => $this->getSocialMediaMetaTags(),
             'featured_image_social_media_meta_tag' => config('lasallesoftware-frontendapp.lasalle_social_media_meta_tag_default_image'),
             'question'                             => $question,
-            'uuid'                                 => $uuid,
         ]);
     }
 
