@@ -63,7 +63,7 @@ class DisplaySinglePostController extends BaseFrontendController
 
             $body = json_decode($response->getBody());
 
-            return view(config('lasallesoftware-frontendapp.lasalle_path_to_front_end_view_path') . '.blog.pages.singleblogpost', [
+            return view(config('lasallesoftware-libraryfrontend.lasalle_path_to_front_end_view_path') . '.blog.pages.singleblogpost', [
                 'title'               => $body->post->title,
                 'author'              => $this->getAuthorLinkHtml($body->post->author),
                 'publish_on'          => $this->formatDate($body->post->publish_on),

@@ -59,7 +59,7 @@ class DisplayBlogPostsForACategoryController extends BaseFrontendController
 
             $transformedPosts = $this->getTransformedPosts($body->posts);
 
-            return view(config('lasallesoftware-frontendapp.lasalle_path_to_front_end_view_path') . '.blog.pages.allblogposts', [
+            return view(config('lasallesoftware-libraryfrontend.lasalle_path_to_front_end_view_path') . '.blog.pages.allblogposts', [
                 'pageTitle'           => 'Posts for the ' . ucwords($categoryTitle) . ' Category',
                 'posts'               => $transformedPosts,
                 'numberOfPosts'       => count($transformedPosts),
@@ -67,7 +67,7 @@ class DisplayBlogPostsForACategoryController extends BaseFrontendController
                 'next_page_url'       => $this->getPageURLForPagination($body->next_page_url, 'category/'.$categoryTitle),
                 'copyright'           => env('LASALLE_COPYRIGHT_IN_FOOTER'),
                 'socialMediaMetaTags' => $this->getSocialMediaMetaTags(),
-                'featured_image_social_media_meta_tag' => config('lasallesoftware-frontendapp.lasalle_social_media_meta_tag_default_image'),
+                'featured_image_social_media_meta_tag' => config('lasallesoftware-libraryfrontend.lasalle_social_media_meta_tag_default_image'),
             ]);
 
         } else {
@@ -95,7 +95,7 @@ class DisplayBlogPostsForACategoryController extends BaseFrontendController
             'url'          => url()->full(),
             'site'         => $this->getSocialMediaMetaTagSite(),
             'creator'      => $this->getSocialMediaMetaTagCreator(),
-            'image'        => config('lasallesoftware-frontendapp.lasalle_social_media_meta_tag_default_image'),
+            'image'        => config('lasallesoftware-libraryfrontend.lasalle_social_media_meta_tag_default_image'),
         ];
     }
 }

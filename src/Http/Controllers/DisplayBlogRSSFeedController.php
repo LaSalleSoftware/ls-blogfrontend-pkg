@@ -72,7 +72,7 @@ class DisplayBlogRSSFeedController extends BaseFrontendController
 
             // Thank you https://github.com/spatie/laravel-feed/blob/master/resources/views/rss.blade.php
             //           https://github.com/spatie/laravel-feed/blob/master/src/Feed.php
-            $contents = view(config('lasallesoftware-frontendapp.lasalle_path_to_front_end_view_path') . '.blog.feeds.atom', [
+            $contents = view(config('lasallesoftware-libraryfrontend.lasalle_path_to_front_end_view_path') . '.blog.feeds.atom', [
                 'posts'     => $transformedPosts,
                 'meta'      => $metaRSSData,
                 'copyright' => env('LASALLE_COPYRIGHT_IN_FOOTER'),

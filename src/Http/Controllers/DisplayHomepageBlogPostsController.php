@@ -81,12 +81,12 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
         $question['second_number'] = $securityQuestionhelper->getRandomNumber();
 
     
-        return view(config('lasallesoftware-frontendapp.lasalle_path_to_front_end_view_path') . '.home', [
+        return view(config('lasallesoftware-libraryfrontend.lasalle_path_to_front_end_view_path') . '.home', [
             'posts'                                => $transformedPosts,
             'numberOfPosts'                        => ($transformedPosts) ? count($transformedPosts) : 0,
             'copyright'                            => env('LASALLE_COPYRIGHT_IN_FOOTER'),
             'socialMediaMetaTags'                  => $this->getSocialMediaMetaTags(),
-            'featured_image_social_media_meta_tag' => config('lasallesoftware-frontendapp.lasalle_social_media_meta_tag_default_image'),
+            'featured_image_social_media_meta_tag' => config('lasallesoftware-libraryfrontend.lasalle_social_media_meta_tag_default_image'),
             'question'                             => $question,
         ]);
     }
@@ -111,7 +111,7 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
             'url'          => url()->full(),
             'site'         => $this->getSocialMediaMetaTagSite(),
             'creator'      => $this->getSocialMediaMetaTagCreator(),
-            'image'        => config('lasallesoftware-frontendapp.lasalle_social_media_meta_tag_default_image'),
+            'image'        => config('lasallesoftware-libraryfrontend.lasalle_social_media_meta_tag_default_image'),
         ];
     }
 }
