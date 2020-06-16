@@ -46,13 +46,6 @@ class DisplaySinglePostController extends BaseFrontendController
 
     public function DisplaySinglePost($slug)
     {
-        // comment is for the UUID database table
-        $comment = 'Created by ' .
-            config('lasallesoftware-library.lasalle_app_domain_name') .
-            "'s Lasallesoftware\Blogfrontend\Http\Controllers\DisplaySinglePostController"
-        ;
-
-        $uuid         = $this->makeUuid($comment, 9);
         $endpointPath = $this->getEndpointPath('singleblogpost');
         $httpRequest  = 'GET';
 
