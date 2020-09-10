@@ -51,28 +51,37 @@ class DisplaySinglePostController extends BaseFrontendController
 
         $response = $this->sendRequestToLasalleBackend($endpointPath, $httpRequest, $slug);
 
+       
+
         //if ($response instanceof \GuzzleHttp\Psr7\Response) {
         if (!isset($this->messages)) {
 
             $body = json_decode($response->getBody());
 
-            return view(config('lasallesoftware-libraryfrontend.lasalle_path_to_front_end_view_path') . '.blog.pages.singleblogpost', [
-                'title'               => $body->post->title,
-                'author'              => $this->getAuthorLinkHtml($body->post->author),
-                'publish_on'          => $this->formatDate($body->post->publish_on),
-                'datetime'            => $this->formatDateForHTMLTimeTag($body->post->publish_on),
-                'category'            => $this->getCategoryLinkHtml($body->post->category),
-                'content'             => $body->post->content,
-                'featured_image'      => $this->getFeaturedImage($body->post->featured_image),
-                'featured_image_type' => $this->getFeaturedImageType($body->post->featured_image_type),
-                'featured_image_social_media_meta_tag' => $this->getFeaturedImageSocialMediaMetaTag($body->post->featured_image_social_meta_tag),
-                'copyright'           => env('LASALLE_COPYRIGHT_IN_FOOTER'),
-                'socialMediaMetaTags' => $this->getSocialMediaMetaTags($body->post),
-                'numberOfTags'        => $this->getTheNumberOfTags($body->tags),
-                'tags'                => $this->transformTags($body->tags),
-                'numberOfPostupdates' => $this->getTheNumberOfPostupdates($body->postupdates),
-                'postupdates'         => $this->transformPostupdates($body->postupdates),
-            ]);
+
+            if ($this->isDisplay($body->post->enabled, $body->post->preview_in_frontend)) {
+
+                return view(config('lasallesoftware-libraryfrontend.lasalle_path_to_front_end_view_path') . '.blog.pages.singleblogpost', [
+                    'title'               => $body->post->title,
+                    'author'              => $this->getAuthorLinkHtml($body->post->author),
+                    'publish_on'          => $this->formatDate($body->post->publish_on),
+                    'datetime'            => $this->formatDateForHTMLTimeTag($body->post->publish_on),
+                    'category'            => $this->getCategoryLinkHtml($body->post->category),
+                    'content'             => $body->post->content,
+                    'featured_image'      => $this->getFeaturedImage($body->post->featured_image),
+                    'featured_image_type' => $this->getFeaturedImageType($body->post->featured_image_type),
+                    'featured_image_social_media_meta_tag' => $this->getFeaturedImageSocialMediaMetaTag($body->post->featured_image_social_meta_tag),
+                    'copyright'           => env('LASALLE_COPYRIGHT_IN_FOOTER'),
+                    'socialMediaMetaTags' => $this->getSocialMediaMetaTags($body->post),
+                    'numberOfTags'        => $this->getTheNumberOfTags($body->tags),
+                    'tags'                => $this->transformTags($body->tags),
+                    'numberOfPostupdates' => $this->getTheNumberOfPostupdates($body->postupdates),
+                    'postupdates'         => $this->transformPostupdates($body->postupdates),
+                ]);
+
+            } else {
+                return "This post, " . $body->post->title . " is supposed to be displayed but it is not. Probably it is supposed to be previewed, but the URL token parameter is not set. Look at your 'Preview in the front-end' field in the admin";
+            }
 
         } else {
             return $this->displayErrorView();
@@ -213,5 +222,5 @@ class DisplaySinglePostController extends BaseFrontendController
 
         //return $collection->sortByDesc('publish_on');
         return $collection->sortBy('publish_on');
-    }
+    }    
 }
