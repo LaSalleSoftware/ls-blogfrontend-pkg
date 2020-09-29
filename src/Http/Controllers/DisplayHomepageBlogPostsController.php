@@ -23,7 +23,6 @@
 namespace Lasallesoftware\Blogfrontend\Http\Controllers;
 
 // LaSalle Software
-use Lasallesoftware\Contactformfrontend\SecurityQuestionhelper;
 use Lasallesoftware\Libraryfrontend\APIRequestsToTheBackend\HttpRequestToAdminBackend;
 
 // Laravel Framework
@@ -76,18 +75,13 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
             $transformedPosts = false;
         }
 
-        // Prepare the security question
-        $question['first_number']  = $securityQuestionhelper->getRandomNumber();
-        $question['second_number'] = $securityQuestionhelper->getRandomNumber();
-
-    
         return view(config('lasallesoftware-libraryfrontend.lasalle_path_to_front_end_view_path') . '.home', [
             'posts'                                => $transformedPosts,
             'numberOfPosts'                        => ($transformedPosts) ? count($transformedPosts) : 0,
             'copyright'                            => env('LASALLE_COPYRIGHT_IN_FOOTER'),
             'socialMediaMetaTags'                  => $this->getSocialMediaMetaTags(),
             'featured_image_social_media_meta_tag' => config('lasallesoftware-libraryfrontend.lasalle_social_media_meta_tag_default_image'),
-            'question'                             => $question,
+            'question'                             => $this->getSecurityQuestion(),
         ]);
     }
 
@@ -113,5 +107,23 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
             'creator'      => $this->getSocialMediaMetaTagCreator(),
             'image'        => config('lasallesoftware-libraryfrontend.lasalle_social_media_meta_tag_default_image'),
         ];
+    }
+
+    /**
+     * Get the contact form's security question
+     *
+     * @return array | null
+     */
+    private function getSecurityQuestion()
+    {
+        if (class_exists(\Lasallesoftware\Contactformfrontend\SecurityQuestionhelper)) {
+            $securityQuestionhelper = resolve('Lasallesoftware\Contactformfrontend\SecurityQuestionhelper');
+            $question['first_number']  = $securityQuestionhelper->getRandomNumber();
+            $question['second_number'] = $securityQuestionhelper->getRandomNumber();
+        } else {
+            $question = null;
+        }
+
+        return $question;
     }
 }
