@@ -44,7 +44,7 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
     protected $messages;
 
 
-    public function DisplayHomepageBlogPosts(SecurityQuestionhelper $securityQuestionhelper)
+    public function DisplayHomepageBlogPosts()
     {
         $endpointPath = $this->getEndpointPath('DisplayHomepageBlogPostsController');
         $httpRequest  = 'GET';
@@ -116,7 +116,7 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
      */
     private function getSecurityQuestion()
     {
-        if (class_exists(\Lasallesoftware\Contactformfrontend\SecurityQuestionhelper)) {
+        if (class_exists('\Lasallesoftware\Contactformfrontend\SecurityQuestionhelper')) {
             $securityQuestionhelper = resolve('Lasallesoftware\Contactformfrontend\SecurityQuestionhelper');
             $question['first_number']  = $securityQuestionhelper->getRandomNumber();
             $question['second_number'] = $securityQuestionhelper->getRandomNumber();
