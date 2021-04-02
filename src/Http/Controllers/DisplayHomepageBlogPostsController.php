@@ -45,7 +45,7 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
 
 
     public function DisplayHomepageBlogPosts()
-    {
+    { 
         $endpointPath = $this->getEndpointPath('DisplayHomepageBlogPostsController');
         $httpRequest  = 'GET';
 
@@ -55,21 +55,9 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
 
             $body = json_decode($response->getBody());
 
-            $transformedPosts = [];
-            foreach ($body->posts as $post) {
-                $transformedPost = [
-                    'title'               => $post->title,
-                    'slug'                => $post->slug,
-                    'author'              => $post->author,
-                    'excerpt'             => $post->excerpt,
-                    'featured_image'      => $this->getFeaturedImage($post->featured_image),
-                    'featured_image_type' => $this->getFeaturedImageType($post->featured_image_type),
-                    'publish_on'          => $this->formatDate($post->publish_on),
-                    'datetime'            => $this->formatDateForHTMLTimeTag($post->publish_on),
-                ];
+            $transformedPosts = $this->getTransformedPosts($body->posts);
 
-                $transformedPosts[] = $transformedPost;
-            }
+            
 
         } else {
             $transformedPosts = false;
@@ -83,6 +71,28 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
             'featured_image_social_media_meta_tag' => config('lasallesoftware-libraryfrontend.lasalle_social_media_meta_tag_default_image'),
             'question'                             => $this->getSecurityQuestion(),
         ]);
+    }
+
+    private function getTransformedPosts($posts)
+    {
+        $transformedPosts = [];
+
+        foreach ($posts as $post) {
+            $transformedPost = [
+                'title'               => $post->title,
+                'slug'                => $post->slug,
+                'author'              => $post->author,
+                'excerpt'             => $post->excerpt,
+                'featured_image'      => $this->getFeaturedImage($post->featured_image),
+                'featured_image_type' => $this->getFeaturedImageType($post->featured_image_type),
+                'publish_on'          => $this->formatDate($post->publish_on),
+                'datetime'            => $this->formatDateForHTMLTimeTag($post->publish_on),
+            ];
+
+            $transformedPosts[] = $transformedPost;
+        }
+
+        return $transformedPosts;
     }
 
     /**
