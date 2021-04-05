@@ -67,8 +67,7 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
 
         } else {
             $transformedPosts = false;
-        } 
-
+        }
 
         return view(config('lasallesoftware-libraryfrontend.lasalle_path_to_front_end_view_path') . '.home', [
             'posts'                                => $transformedPosts,
@@ -135,8 +134,8 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
 
             // Add all the transformed episodes to (what is essentially) the podcast show "outer" array.
             // So we've recreated the same nested array structure that we started with, except now we have transformed episodes.
-            $transformedPodcastEpisodesForAllPodcastShows[] = $podcastEpisodeForAPodcastShow;
-        }        
+            $transformedPodcastEpisodesForAllPodcastShows[] = $transformedPodcastEpisodeForAPodcastShow;
+        }
 
         return $transformedPodcastEpisodesForAllPodcastShows;
     }
