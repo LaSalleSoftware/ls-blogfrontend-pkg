@@ -67,13 +67,14 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
 
         } else {
             $transformedPosts = false;
-        }
+        }       
+
 
         return view(config('lasallesoftware-libraryfrontend.lasalle_path_to_front_end_view_path') . '.home', [
             'posts'                                => $transformedPosts,
             'numberOfPosts'                        => ($transformedPosts) ? count($transformedPosts) : 0,
-            'podcast_episodes'                     => $transformedPodcastEpisodes,
-            'video_episodes'                       => $transformedVideoEpisodes,
+            'podcast_episodes'                     => isset($transformedPodcastEpisodes) ? $transformedPodcastEpisodes : null,
+            'video_episodes'                       => isset($transformedVideoEpisodes) ? $transformedVideoEpisodes : null,
             'copyright'                            => env('LASALLE_COPYRIGHT_IN_FOOTER'),
             'socialMediaMetaTags'                  => $this->getSocialMediaMetaTags(),
             'featured_image_social_media_meta_tag' => config('lasallesoftware-libraryfrontend.lasalle_social_media_meta_tag_default_image'),
