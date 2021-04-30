@@ -56,10 +56,15 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
             'number_of_video_episodes'   => config('lasallesoftware-libraryfrontend.lasalle_number_of_recent_video_episodes_to_display_on_the_home_page'),            
         ];
 
+      
+        
+
         $response = $this->sendRequestToLasalleBackend($endpointPath, $httpRequest, null, $postData);
 
         if (!isset($this->messages)) {
             $body = json_decode($response->getBody());
+
+          
 
             $transformedPosts           = $this->getTransformedPosts($body->posts);
             $transformedPodcastEpisodes = $this->getTransformedPodcastEpisodes($body->podcast_episodes);
@@ -67,7 +72,8 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
 
         } else {
             $transformedPosts = false;
-        }       
+        }   
+        
 
 
         return view(config('lasallesoftware-libraryfrontend.lasalle_path_to_front_end_view_path') . '.home', [
@@ -126,6 +132,7 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
                     'website_excerpt'         => $podcastEpisode->website_excerpt,
                     'website_featured_image'  => $podcastEpisode->website_featured_image,
                     'itunes_link'             => $podcastEpisode->itunes_link,
+                    'itunes_enclosure_url'    => $podcastEpisode->itunes_enclosure_url,
                     'website_publish_on'      => $this->formatDate($podcastEpisode->website_publish_on),
                     ];                
             
