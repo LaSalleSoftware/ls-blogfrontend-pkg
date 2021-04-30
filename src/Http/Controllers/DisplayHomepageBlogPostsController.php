@@ -55,20 +55,18 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
             'video_shows'                => config('lasallesoftware-libraryfrontend.lasalle_video_shows_to_display_on_the_home_page'),
             'number_of_video_episodes'   => config('lasallesoftware-libraryfrontend.lasalle_number_of_recent_video_episodes_to_display_on_the_home_page'),            
         ];
-
-      
-        
+  
 
         $response = $this->sendRequestToLasalleBackend($endpointPath, $httpRequest, null, $postData);
 
+
         if (!isset($this->messages)) {
+
             $body = json_decode($response->getBody());
 
-          
-
             $transformedPosts           = $this->getTransformedPosts($body->posts);
-            $transformedPodcastEpisodes = $this->getTransformedPodcastEpisodes($body->podcast_episodes);
-            $transformedVideoEpisodes   = $this->getTransformedVideoEpisodes($body->video_episodes);
+            $transformedPodcastEpisodes = (is_null($body->podcast_episodes)) ? null : $this->getTransformedPodcastEpisodes($body->podcast_episodes);
+            $transformedVideoEpisodes   = (is_null($body->video_episodes))   ? null : $this->getTransformedVideoEpisodes($body->video_episodes);
 
         } else {
             $transformedPosts = false;
