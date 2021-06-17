@@ -3,7 +3,7 @@
 <p align="center">
 <a href="https://packagist.org/packages/lasallesoftware/ls-blogfrontend-pkg"><img src="https://poser.pugx.org/lasallesoftware/ls-blogfrontend-pkg/v/stable.svg" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/lasallesoftware/ls-blogfrontend-pkg"><img src="https://poser.pugx.org/lasallesoftware/ls-blogfrontend-pkg/license.svg" alt="License"></a>
-<a href="https://laravel.com/"><img src="https://img.shields.io/badge/Laravel-v7-brightgreen.svg?style=flat-square" alt="Laravel v7.x"></a> 
+<a href="https://laravel.com/"><img src="https://img.shields.io/badge/Laravel-v8-brightgreen.svg?style=flat-square" alt="Laravel v8.x"></a> 
 </p>
 
 Library package for my LaSalle Software Version 2.
