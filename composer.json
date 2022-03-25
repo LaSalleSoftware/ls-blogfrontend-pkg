@@ -19,16 +19,11 @@
         }
     ],
     "require": {
-        "php": "^7.3|^8.0"
+        "php": "^8.0.2"
     },
     "autoload": {
         "psr-4": {
             "Lasallesoftware\\Blogfrontend\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Lasallesoftware\\Blogfrontend\\Test\\": "tests/"
         }
     },
     "extra": {
@@ -37,16 +32,6 @@
                 "Lasallesoftware\\Blogfrontend\\BlogfrontendServiceProvider"
             ]
         }
-    },
-    "scripts": {
-        "test": "phpunit"
-    },
-    "suggest": {
-    },
-    "config": {
-        "preferred-install": "dist",
-        "sort-packages": true,
-        "optimize-autoloader": true
     },
     "minimum-stability": "dev",
     "prefer-stable": true
