@@ -82,6 +82,7 @@ class DisplayAllBlogPostsController extends BaseFrontendController
                 'copyright'                            => env('LASALLE_COPYRIGHT_IN_FOOTER'),
                 'socialMediaMetaTags'                  => $this->getSocialMediaMetaTags(),
                 'featured_image_social_media_meta_tag' => config('lasallesoftware-libraryfrontend.lasalle_social_media_meta_tag_default_image'),
+                'sponsors'                             => $body->sponsors,
             ]);
 
         } else {

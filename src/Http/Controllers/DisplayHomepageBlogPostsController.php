@@ -83,6 +83,7 @@ class DisplayHomepageBlogPostsController extends BaseFrontendController
             'socialMediaMetaTags'                  => $this->getSocialMediaMetaTags(),
             'featured_image_social_media_meta_tag' => config('lasallesoftware-libraryfrontend.lasalle_social_media_meta_tag_default_image'),
             'question'                             => $this->getSecurityQuestion(),
+            'sponsors'                             => $body->sponsors,
         ]);
     }
 

@@ -77,6 +77,7 @@ class DisplaySinglePostController extends BaseFrontendController
                     'tags'                => $this->transformTags($body->tags),
                     'numberOfPostupdates' => $this->getTheNumberOfPostupdates($body->postupdates),
                     'postupdates'         => $this->transformPostupdates($body->postupdates),
+                    'sponsors'            => $body->sponsors,
                 ]);
 
             } else {
